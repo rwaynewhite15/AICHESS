@@ -40,8 +40,10 @@ main {
 .board-area { display: flex; flex-direction: column; gap: 10px; }
 
 .board {
-  width: min(80vw, 560px);
-  height: min(80vw, 560px);
+  /* Bound by width AND height so the board is never clipped on short or
+     narrow viewports; aspect-ratio keeps the squares perfectly square. */
+  width: min(88vw, 72vh, 560px);
+  aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
@@ -62,13 +64,24 @@ main {
 .square.dark { background: var(--dark); }
 
 .piece {
-  font-size: min(11vw, 4.4rem);
+  /* Scale with the board (which is bounded by vmin via width/height above). */
+  font-size: min(9.5vmin, 4.2rem);
   line-height: 1;
   pointer-events: none;
   transition: transform 0.08s ease;
 }
-.piece.white { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 1px #000; }
-.piece.black { color: #1a1a1a; text-shadow: 0 1px 1px rgba(255,255,255,0.25); }
+/* Solid, classic-looking pieces: filled glyphs with a contrasting outline so
+   White reads as ivory and Black as ebony on either square colour. */
+.piece.white {
+  color: #f6f3ec;
+  -webkit-text-stroke: 1.4px #2a2a2a;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+.piece.black {
+  color: #2b2b2b;
+  -webkit-text-stroke: 1.2px #050505;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+}
 
 .square.selected { background: var(--select) !important; }
 
@@ -123,6 +136,9 @@ main {
   color: #a8a39d;
 }
 .captured { font-size: 1.3rem; line-height: 1; letter-spacing: -2px; }
+/* Captured pieces sit on the dark bar, so keep both colours legible. */
+.cap-piece.white { color: #f0ece3; }
+.cap-piece.black { color: #5a5650; -webkit-text-stroke: 0.5px #9a958d; }
 
 .panel {
   background: var(--panel);
@@ -205,6 +221,9 @@ main {
   transition: transform 0.1s ease, border-color 0.1s ease;
 }
 .promo-btn:hover { transform: scale(1.08); border-color: var(--accent); }
+/* Render the promotion glyphs in the player's colour (filled + outlined). */
+.promo-btn.white { color: #f6f3ec; -webkit-text-stroke: 1.3px #2a2a2a; }
+.promo-btn.black { color: #2b2b2b; -webkit-text-stroke: 1.1px #050505; }
 
 @media (max-width: 720px) {
   main { flex-direction: column; align-items: center; }
