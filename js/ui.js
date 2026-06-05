@@ -6,8 +6,11 @@
  * (promotion choice, status messages, new game, undo, difficulty).
  */
 
+// Use the solid (filled) glyphs for both colours so the pieces read as a
+// classic chess set; White vs Black is conveyed by CSS fill + outline rather
+// than by the thinner hollow Unicode variants.
 const UNICODE = {
-  wK: '♔', wQ: '♕', wR: '♖', wB: '♗', wN: '♘', wP: '♙',
+  wK: '♚', wQ: '♛', wR: '♜', wB: '♝', wN: '♞', wP: '♟',
   bK: '♚', bQ: '♛', bR: '♜', bB: '♝', bN: '♞', bP: '♟',
 };
 
@@ -300,17 +303,20 @@ class GameUI {
     }
     const initial = { P: 8, N: 2, B: 2, R: 2, Q: 1 };
     const buildList = (color) => {
+      const cls = color === WHITE ? 'white' : 'black';
       let html = '';
       for (const type of ['Q', 'R', 'B', 'N', 'P']) {
         const present = counts[color + type] || 0;
         const missing = initial[type] - present;
-        for (let i = 0; i < missing; i++) html += UNICODE[color + type];
+        for (let i = 0; i < missing; i++) {
+          html += `<span class="cap-piece ${cls}">${UNICODE[color + type]}</span>`;
+        }
       }
       return html;
     };
     // Show pieces each side has captured (i.e. opponent's missing pieces).
-    this.capturedWhiteEl.textContent = buildList(BLACK); // White captured Black pieces
-    this.capturedBlackEl.textContent = buildList(WHITE);
+    this.capturedWhiteEl.innerHTML = buildList(BLACK); // White captured Black pieces
+    this.capturedBlackEl.innerHTML = buildList(WHITE);
   }
 
   render() {
@@ -370,7 +376,7 @@ class GameUI {
     const color = this.humanColor;
     for (const type of ['Q', 'R', 'B', 'N']) {
       const btn = document.createElement('button');
-      btn.className = 'promo-btn';
+      btn.className = 'promo-btn ' + (color === WHITE ? 'white' : 'black');
       btn.textContent = UNICODE[color + type];
       btn.addEventListener('click', () => {
         const move = this.legalForSelected.find(
