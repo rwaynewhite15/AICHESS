@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chess vs Minimax AI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>♞ Chess vs AI</h1>
+      <p class="subtitle">Play against a minimax engine with alpha-beta pruning</p>
+    </header>
+
+    <main>
+      <div class="board-area">
+        <div class="captured-bar">
+          <span class="captured-label">AI captured:</span>
+          <span id="captured-black" class="captured"></span>
+        </div>
+
+        <div id="board" class="board"></div>
+
+        <div class="captured-bar">
+          <span class="captured-label">You captured:</span>
+          <span id="captured-white" class="captured"></span>
+        </div>
+
+        <div id="status" class="status">White to move.</div>
+      </div>
+
+      <aside class="panel">
+        <div class="controls">
+          <button id="new-game" class="btn primary">New Game</button>
+          <button id="undo" class="btn">Undo</button>
+
+          <label class="field">
+            <span>Difficulty</span>
+            <select id="difficulty">
+              <option value="easy">Easy (depth 2)</option>
+              <option value="medium">Medium (depth 3)</option>
+              <option value="hard">Hard (depth 4)</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Play as</span>
+            <select id="side">
+              <option value="w">White</option>
+              <option value="b">Black</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="moves-wrap">
+          <h2>Moves</h2>
+          <div id="moves" class="moves"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Promotion chooser overlay -->
+  <div id="promotion" class="promotion-overlay">
+    <div class="promotion-dialog">
+      <p>Promote pawn to:</p>
+      <div class="promotion-choices"></div>
+    </div>
+  </div>
+
+  <script src="js/chess.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
