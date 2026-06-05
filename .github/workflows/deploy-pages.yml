@@ -1,10 +1,12 @@
 name: Deploy to GitHub Pages
 
 # Builds nothing (static site) — just uploads the repo and deploys it to Pages.
+# Deploys from the default branch, which the github-pages environment allows by
+# default. Merge changes into main to publish.
 on:
   push:
     branches:
-      - claude/chess-minimax-ai-JsJ27
+      - main
   workflow_dispatch:
 
 # Permissions required by the Pages deployment actions.
